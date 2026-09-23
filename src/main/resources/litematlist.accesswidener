@@ -1,0 +1,2 @@
+﻿classTweaker 1 named
+accessible class net/minecraft/server/MinecraftServer field session
