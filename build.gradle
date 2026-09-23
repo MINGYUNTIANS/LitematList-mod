@@ -1,0 +1,99 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version '1.17.18'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven {
+        url = uri("https://masa.dy.fi/maven/sakura-ryoko")
+    }
+    maven {
+        url = uri("https://maven.fallenbreath.me/releases")
+    }
+    maven {
+        url = uri("https://maven.terraformersmc.com/")
+    }
+    maven {
+        url = uri("https://maven.nucleoid.xyz/")
+    }
+    // Maven Central（pinyin4j 拼音库）
+    mavenCentral()
+}
+
+dependencies {
+    // Fabric (MC 26.1+ uses standard Gradle configs, NOT modImplementation)
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    // MaLib (Sakura-Ryoko fork)
+    implementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+
+    // Litematica
+    implementation "fi.dy.masa.litematica:litematica-fabric-${project.minecraft_version}:${project.litematica_version}"
+
+    // conditional-mixin (MaLib/Litematica 传递依赖，打包进模组)
+    implementation "me.fallenbreath:conditional-mixin-fabric:0.6.4"
+    include "me.fallenbreath:conditional-mixin-fabric:0.6.4"
+
+    // pinyin4j：中文物品名拼音模糊搜索支持（打包进模组 jar）
+    implementation "com.belerweb:pinyin4j:2.5.1"
+    include "com.belerweb:pinyin4j:2.5.1"
+
+    // Mod Menu (compileOnly)
+    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "loader_version", project.loader_version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+                "minecraft_version": project.minecraft_version,
+                "loader_version": project.loader_version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 25
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            artifactId = project.archives_base_name
+            from components.java
+        }
+    }
+    repositories {}
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}

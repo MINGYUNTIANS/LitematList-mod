@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "com.litematlist.mixin",
+  "plugin": "com.litematlist.mixin.LitematListMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "ContainerMenuMixin",
+    "GuiMainMenuMixin",
+    "GuiSchematicPreviewFullscreenMixin",
+    "InGameHudMixin",
+    "MaterialListHudRendererMixin",
+    "MixinSyncmaticaMaterialHud"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
