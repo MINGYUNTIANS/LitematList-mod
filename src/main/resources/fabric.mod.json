@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "litematlist",
+  "version": "${version}",
+  "name": "LitematList",
+  "description": "Allows players to view multiple litematic material lists in one window at the same time.\n",
+  "authors": [
+    "MINGYUNTIANS(主要制作者)",
+    "yuanxungeji(大量灵感提供)"
+  ],
+  "contact": {
+    "homepage": "https://github.com/MINGYUNTIANS/LitematList-mod",
+    "sources": "https://github.com/MINGYUNTIANS/LitematList-mod",
+    "issues": "https://github.com/MINGYUNTIANS/LitematList-mod/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/litematlist/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.litematlist.LitematListMod"
+    ],
+    "client": [
+      "com.litematlist.LitematListMod"
+    ],
+    "modmenu": [
+      "com.litematlist.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "litematlist.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=21",
+    "fabric-api": "*",
+    "malilib": "*",
+    "litematica": "*"
+  }
+}
