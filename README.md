@@ -1,91 +1,72 @@
-# LitematList MOD
+# LitematList
 
-专门为玩家准备的材料列表助手
-（The code is in other branches）
+在游戏内集中查看多个 litematic 投影的材料清单，支持材料树溯源、原材料替换、HUD 显示与全屏原理图预览。
 
-## 功能
+本工程基于 [Fallen-Breath/fabric-mod-template](https://github.com/Fallen-Breath/fabric-mod-template) 的多版本结构，用一个 Gradle 工程同时构建多个 Minecraft 版本。
 
-**材料清单管理**：在一个窗口中同时管理多个原理图的材料列表。
+## 支持版本
 
-**Bill of materials management**: manage the bill of materials of multiple schematic diagrams in one window at the same time.
+| 子项目 | 编译 MC 版本 | 运行范围 | Java |
+| --- | --- | --- | --- |
+| 1.17.1 | 1.17.1 | 1.17.x | 16 |
+| 1.19.4 | 1.19.4 | 1.19.x | 17 |
+| 1.20.1 | 1.20.1 | 1.20.1 | 17 |
+| 1.21.1 | 1.21 | >=1.21 <=1.21.1 | 21 |
+| 1.21.4 | 1.21.4 | ~1.21.4 | 21 |
+| 1.21.8 | 1.21.8 | ~1.21.8 | 21 |
+| 1.21.10 | 1.21.10 | >=1.21.9 <=1.21.10 | 21 |
+| 1.21.11 | 1.21.11 | ~1.21.11 | 21 |
+| 26.1.2 | 26.1.2 | ~26.1.2 | 25 |
+| 26.2 | 26.2 | ~26.2 | 25 |
+| 26.3 | 26.3 | ~26.3 | 25 |
 
-**多格式导入**：支持 Litematica 导出的 .txt、 .json、.csv文件。
+依赖：Fabric API、MaLib、Litematica；Mod Menu 仅编译期使用；pinyin4j 打包进模组 jar。
 
-**Multi-format import**: supports. txt,. json and. csv files exported by Litematica.
+## 工程结构
 
-**从投影同步**：与 Litematica 联动，可同步已加载原理图的材料列表。
+```
+src/main/java                         统一核心源码（core = 1.21.10）
+versions/<版本>/src/main/java         版本级源码覆盖（仅 26.x 使用）
+versions/<版本>/src/main/resources    版本级资源覆盖（lang、accesswidener、fabric.mod.json）
+versions/mainProject                  核心版本名（1.21.10）
+settings.json                         参与构建的版本列表
+build.gradle                          预处理器版本节点链 + 产物汇总任务
+common.gradle                         各版本共用的构建逻辑
+```
 
-**Synchronization from Litematica**: in conjunction with Litematica, the material list of the loaded schematic diagram can be synchronized.
-
-**树状图**：用树状图显示成品所需原材料。
-
-**Tree diagram**: use tree diagram to show the raw materials needed for finished products.
-
-**同步投影渲染层**：从投影同步时按 Litematica 当前渲染层规则统计方块。
-
-**Synchronize Litematica rendering layer**: when synchronizing from projection, press Litematica's current rendering layer rule statistics box.
-
-**自动取货**：劫持投影的材料列表，让tweakermore的“自动收集材料列表物品”读取并取货。
-
-**Automatic pick-up**: hijack the Litematica material list, and let tweakermore's "Automatic Collection of Material List Items" read and pick up the goods.
-
-**材料统计**：显示物品图标+名称、总计、已有、缺失数量。
-**量级换算**：鼠标悬停时显示数量换算（如 328 = 5x64 + 8，0.19 潜影盒）。
-
-**Material statistics**: display item icon+name, total, existing and missing quantity.
-**Magnitude conversion**: display quantity conversion when hovering over the mouse (for example, 328 = 5x64+8, 0.19 shulker box).
-
-**忽略/替换**：可忽略不需要的材料，或替换为其他物品。
-
-**Ignore/Replace**: You can ignore unnecessary materials or replace them with other items.
-
-**标记材料**：支持置顶标记材料，优先显示⭐。
-
-**Marking material**: Supporting top marking material, giving priority to display ⭐.
-
-**隐藏不缺材料**：在列表中隐藏缺失数量为 0 的物品。
-
-**Hide No Missing Materials**: Hide the items with missing quantity of 0 in the list.
-
-**原理图预览**：安装 SchematicPreview 模组后，可在主界面直接预览原理图 3D 全貌。
-
-**SchematicPreview**: After installing the schematic preview module, you can directly preview the 3D panorama of schematic diagram in the main interface.
-
-**共享原理图读取**：可同步「共享原理图增强」(Syncmatica Revolution) 的已认领材料。
-
-**Shared schematic reading**: the claimed materials of "synchronized Syncmatica Revolution" can be synchronized.
-
-**配置系统**：通过 MaLib 的多模组配置菜单进行配置。
-
-**Configure the system**: through MaLib's configuration menu.
-
-
-
-
-## 依赖
-
-- Fabric Loader
-- Fabric API
-- [MaLiLib](https://github.com/sakura-ryoko/malilib) (Sakura-Ryoko fork)
-- [Litematica](https://github.com/sakura-ryoko/litematica)
-- (选) [SchematicPreview](https://github.com/sakura-ryoko/schematicpreview) — 原理图 3D 预览
-- (选) [Mod Menu](https://github.com/TerraformersMC/ModMenu) — 模组菜单集成
-
-## 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| L + C | 打开材料列表主界面 |
-| V + C | 打开模组配置界面 |
+- **1.17.1 ~ 1.21.11**：共用 `src/main/java`。版本差异用预处理器指令表达：
+  - `//#if MC == 12110` / `//#elseif` / `//#endif` 声明条件；
+  - 非核心版本的备选行加 `//$$` 前缀，核心版本的代码保持正常缩进。
+  - 核心版本（1.21.10）的源码本身必须能直接编译，因此非核心分支必须全部带 `//$$`。
+- **26.x**：Minecraft 26 起为未混淆版本，类名与 Yarn 完全不同（`Minecraft` / `Level` / `ResourceLocation`），因此使用 `versions/26.x/src/main/java` 独立覆盖。26.2、26.3 只保留与上游不同的文件，其余文件自动继承；26.2 中被移除的类用空 `.java` 文件占位。
+- 每个版本的 `gradle.properties` 定义该版本使用的 Minecraft/Yarn/loader/依赖版本。
 
 ## 构建
 
-```bash
-./gradlew build
+需要 JDK 25（26.x 使用 `--release 25`，低版本在同一 JDK 上以 `--release 8/16/17/21` 编译）：
+
+```bat
+set JAVA_HOME=D:\Java\java25
+gradlew.bat buildAndGather
 ```
 
-构建产物位于 `build/libs/`。
+单版本构建：
 
-## 协议
+```bat
+gradlew.bat :1.21.10:build
+```
 
-MIT License - 详见 [LICENSE](LICENSE)
+产物：`build/libs/litematlist-v1.7.7-mc<MC版本>.jar`，以及各子项目的 `versions/<版本>/build/libs/`。
+
+## 修改指南
+
+- **公共逻辑**：直接改 `src/main/java`，所有 Yarn 版本同步生效。
+- **仅某一版本**：在共用代码中用 `//#if MC == <版本号>` 包裹；需要整文件替换时，把文件放进 `versions/<版本>/src/main/java/...`（核心版本 1.21.10 除外）。
+- **26.x**：改对应 `versions/26.x/src/main/java`；若 26.2/26.3 与上游行为相同，删除该文件即可自动继承。
+- **新增 MC 版本**：在 `settings.json` 与 `build.gradle` 中增加版本节点，创建 `versions/<版本>/gradle.properties`；若与相邻版本差异大，按 26.x 的方式放覆盖源码。
+
+## 备注
+
+- `masa.dy.fi` / `sakura-ryoko` 仓库可能偶发不可达，Gradle 会优先使用本地缓存。
+- 1.19.4 / 1.20.1 的少量中文注释在独立版本中原本就是乱码，合并时原样保留，不影响功能。
+- 多版本结构参考自 fabric-mod-template（模板脚手架部分遵循其原许可证），本次合并后的模组代码遵循 MIT。
