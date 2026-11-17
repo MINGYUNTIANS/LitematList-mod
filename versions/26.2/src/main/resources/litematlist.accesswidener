@@ -1,0 +1,15 @@
+accessWidener   v2      official
+accessible      field   com/mojang/blaze3d/vertex/BufferBuilder building        Z
+accessible      field   net/minecraft/client/renderer/GameRenderer      globalSettingsUniform   Lnet/minecraft/client/renderer/GlobalSettingsUniform;
+accessible      field   net/minecraft/client/renderer/GlobalSettingsUniform     buffer  Lcom/mojang/blaze3d/buffers/GpuBuffer;
+accessible field net/minecraft/client/renderer/rendertype/RenderType state Lnet/minecraft/client/renderer/rendertype/RenderSetup;
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup pipeline Lcom/mojang/blaze3d/pipeline/RenderPipeline;
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup textures Ljava/util/Map;
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup textureTransform Lnet/minecraft/client/renderer/rendertype/TextureTransform;
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup outputTarget Lnet/minecraft/client/renderer/rendertype/OutputTarget;
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup outlineProperty Lnet/minecraft/client/renderer/rendertype/RenderSetup$OutlineProperty;
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup useLightmap Z
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup useOverlay Z
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup affectsCrumbling Z
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup sortOnUpload Z
+accessible field net/minecraft/client/renderer/rendertype/RenderSetup layeringTransform Lnet/minecraft/client/renderer/rendertype/LayeringTransform;
