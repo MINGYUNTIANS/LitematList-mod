@@ -1,0 +1,8 @@
+accessWidener v2 named
+
+accessible field net/minecraft/client/render/BufferBuilder building Z
+
+# 内置全屏预览：把预览 Framebuffer 纹理直接作为 GUI 元素绘制（DrawContext 内部状态）
+accessible field net/minecraft/client/gui/DrawContext state Lnet/minecraft/client/gui/render/state/GuiRenderState;
+accessible field net/minecraft/client/gui/DrawContext scissorStack Lnet/minecraft/client/gui/DrawContext$ScissorStack;
+accessible class net/minecraft/client/gui/DrawContext$ScissorStack
